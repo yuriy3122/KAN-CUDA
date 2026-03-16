@@ -7,7 +7,7 @@ It does **not** use PyTorch.
 
 - CSV parsing for `train-hmda-data.csv`
 - row skipping for missing values / `Exempt`
-- feature selection matching the Python script logic:
+- feature selection:
   - drop `action_taken`, `loan_amount`, `income`, `loan_term`, `property_value`
   - then take remaining columns slice `[1:19]`
 - stratified train/val/test split
