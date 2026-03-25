@@ -1,0 +1,50 @@
+{
+  "version": 4,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "KAN_ENABLE_CUDA_LINEINFO": "ON"
+      }
+    },
+    {
+      "name": "vs2022-debug",
+      "displayName": "Visual Studio 2022 Debug",
+      "inherits": "base",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "cacheVariables": {
+        "KAN_ENABLE_CUDA_DEBUG": "ON"
+      }
+    },
+    {
+      "name": "vs2022-relwithdebinfo",
+      "displayName": "Visual Studio 2022 RelWithDebInfo",
+      "inherits": "base",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "cacheVariables": {
+        "KAN_ENABLE_CUDA_DEBUG": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "vs2022-debug",
+      "configurePreset": "vs2022-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "vs2022-relwithdebinfo",
+      "configurePreset": "vs2022-relwithdebinfo",
+      "configuration": "RelWithDebInfo"
+    }
+  ]
+}
