@@ -1,7 +1,5 @@
 # CUDA KAN credit model (pure C++/CUDA)
 
-This package is a pure C++/CUDA training pipeline.
-
 ## What is implemented
 
 - CSV parsing for `train-hmda-data.csv`
