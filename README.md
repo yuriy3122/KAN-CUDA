@@ -1,7 +1,6 @@
 # CUDA KAN credit model (pure C++/CUDA)
 
-This package is a pure C++/CUDA training pipeline derived from the logic in `trainModel.py`.
-It does **not** use PyTorch.
+This package is a pure C++/CUDA training pipeline.
 
 ## What is implemented
 
