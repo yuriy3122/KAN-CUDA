@@ -33,6 +33,40 @@ The training loop follows the usual ML workflow:
 5. Train the model with mini-batch SGD and softmax cross-entropy.
 6. Track train, validation, and test accuracy across epochs.
 
+### Why scaling matters
+
+Before training, each numeric feature is normalized with MinMax scaling fit on the training split only:
+
+![Min-Max feature scaling formula card](assets/formulas/minmax_scaling.svg)
+
+This matters for two reasons:
+
+- it avoids data leakage, because validation and test statistics are never used to fit the scaler
+- it makes the KAN spline grids easier to use, because this implementation initializes them on a fixed range near `[-1, 1]`
+
+If one feature had a much larger numeric range than another, the spline basis on that feature would be sampled very differently and training would become harder to tune.
+
+### From logits to probabilities
+
+The model produces two output logits for each sample.
+Those logits are converted into class probabilities with softmax:
+
+![Softmax probability formula card](assets/formulas/softmax.svg)
+
+Training minimizes mean cross-entropy over each mini-batch:
+
+![Cross-entropy loss formula card](assets/formulas/cross_entropy.svg)
+
+Here `B` is the mini-batch size, and `p_{y^(b)}^(b)` means the predicted probability assigned to the correct class for sample `b`.
+This loss is small when the model assigns high probability to the right class and large when it is confidently wrong.
+
+After gradients are computed, parameters are updated with SGD:
+
+![SGD update formula card](assets/formulas/sgd_update.svg)
+
+The learning rate `eta` controls how large each update is.
+If it is too large, training can become unstable; if it is too small, learning becomes slow.
+
 Why these pieces matter:
 
 - The train split is used to fit model parameters.
@@ -60,9 +94,18 @@ The core idea is different from a standard MLP:
 KANs are inspired by the Kolmogorov-Arnold representation theorem, which shows that multivariate continuous functions can be represented through sums and compositions of univariate functions.
 Modern KAN architectures do not implement that theorem literally, but they use the same intuition: build complex mappings from learnable one-dimensional transformations.
 
+### From MLP weights to KAN edge functions
+
+In a dense MLP layer, an output is usually formed from scalar weights followed by an activation.
+In a KAN layer, each edge contributes a learned one-dimensional function instead.
 For one layer in this implementation, each output channel is formed by summing learned per-edge transforms:
 
-`y_o = sum_i phi_{i,o}(x_i)`
+![KAN layer output formula card](assets/formulas/kan_layer_output.svg)
+
+This means each input dimension can learn a different nonlinear response for every output channel.
+That is a major reason KANs can be expressive on tabular data: the model is not forced to treat every edge as just a scalar multiply.
+
+### Base path plus spline path
 
 Here each edge function `phi_{i,o}` has two parts:
 
@@ -71,17 +114,36 @@ Here each edge function `phi_{i,o}` has two parts:
 
 In code, the edge function is effectively:
 
-`phi_{i,o}(x) = scale_base(i,o) * SiLU(x) + scale_sp(i,o) * spline_{i,o}(x)`
+![KAN edge function formula card](assets/formulas/edge_function.svg)
 
 and the spline term is:
 
-`spline_{i,o}(x) = sum_j coef(i,o,j) * N_{j,k}(x)`
+![Spline expansion formula card](assets/formulas/spline_expansion.svg)
 
 where `N_{j,k}(x)` is the `j`-th B-spline basis function of degree `k`.
+The symbol `G` in the formula corresponds to `grid_intervals` in the code.
+
+The base `SiLU` branch gives each edge a smooth default nonlinear shape, while the spline branch adds local, data-dependent corrections.
+That combination is useful in practice: the base path keeps the model from being entirely dependent on the spline coefficients, and the spline path gives the network finer control where the data needs it.
+
+### Why B-splines are used
+
+B-splines are attractive because they have local support.
+Changing one coefficient mainly affects the function in a limited region of the input axis instead of everywhere at once.
+That makes the learned edge functions easier to tune and interpret.
+
+The recursive definition of the basis looks like:
+
+![B-spline basis recurrence formula card](assets/formulas/bspline_recursion.svg)
+
+You do not need to evaluate the whole basis over the whole grid for every sample.
+For a given input value, only a small number of basis functions around the active knot span are nonzero.
+That property is exactly what the CUDA kernels exploit: they first find the span, then compute only the local basis values needed for accumulation and backpropagation.
 
 How that maps to this codebase:
 
 - `grid` stores the knot positions for each input dimension of a layer.
+- Each input dimension has its own knot grid, shared across output channels in that layer.
 - `coef` stores spline coefficients for each input-output edge.
 - `scale_base` weights the SiLU branch.
 - `scale_sp` weights the spline branch.
@@ -95,13 +157,16 @@ Implementation-specific notes:
 - The number of spline coefficients is `grid_intervals + k`.
 - This baseline uses two KAN layers: `input -> hidden` and `hidden -> 2`.
 - The last layer outputs two logits for binary classification.
+- The forward kernel uses shared memory for the current knot grid and coefficient tile.
 - Gradients in the backward CUDA kernel rely on `atomicAdd`, which is simple and correct in structure but not the final optimized form.
 
 Intuitively, increasing `grid` gives each edge function more local detail, while increasing `hidden` gives the network more intermediate channels to combine those learned one-dimensional transforms.
-That is the main capacity tradeoff in this model.
+Increasing `k` makes the basis smoother and slightly less local.
+Those three knobs, `grid`, `hidden`, and `k`, define most of the model-capacity tradeoff in this baseline.
 
 ## File layout
 
+- `assets/formulas/*.svg`
 - `include/csv_reader.h`
 - `include/preprocess.h`
 - `include/kan_cuda_kernels.h`

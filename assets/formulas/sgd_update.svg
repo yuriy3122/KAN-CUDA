@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="300" viewBox="0 0 1200 300" version="1.1">
+  <defs>
+    <clipPath id="cardClip">
+      <rect x="12" y="12" width="1176" height="276" rx="20" />
+    </clipPath>
+    <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+  </defs>
+  <rect x="12" y="12" width="1176" height="276" rx="20" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
+  <text x="44" y="60" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#0f172a">SGD Parameter Update</text>
+  <text x="44" y="96" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#475569">Move parameters in the negative gradient direction using the chosen</text>
+  <text x="44" y="118" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#475569">learning rate.</text>
+  <line x1="44" y1="136" x2="1156" y2="136" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="44" y="154" width="1112" height="110" rx="14" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <g transform="translate(373.23,172.00) scale(2.387097)">
+<g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="text_1">
+   
+   <g transform="translate(0 24) scale(0.3 -0.3)">
+    <defs>
+     <path id="DejaVuSans-Oblique-3b8" d="M 2913 2219  L 925 2219  Q 791 1284 928 888  Q 1100 400 1566 400  Q 2034 400 2391 891  Q 2703 1322 2913 2219  z M 3009 2750  Q 3094 3638 2984 3950  Q 2813 4444 2353 4444  Q 1875 4444 1525 3956  Q 1250 3563 1034 2750  L 3009 2750  z M 2444 4913  Q 3194 4913 3494 4250  Q 3794 3591 3566 2422  Q 3341 1256 2781 594  Q 2225 -72 1475 -72  Q 722 -72 425 594  Q 128 1256 353 2422  Q 581 3591 1134 4250  Q 1691 4913 2444 4913  z " transform="scale(0.015625)" />
+     <path id="DejaVuSans-2190" d="M 313 1866  L 313 2147  L 1541 3375  L 1916 3000  L 1188 2272  L 4997 2272  L 4997 1741  L 1188 1741  L 1916 1013  L 1541 638  L 313 1866  z " transform="scale(0.015625)" />
+     <path id="DejaVuSans-2212" d="M 678 2272  L 4684 2272  L 4684 1741  L 678 1741  L 678 2272  z " transform="scale(0.015625)" />
+     <path id="DejaVuSans-Oblique-3b7" d="M 3703 2113  L 3034 -1331  L 2459 -1331  L 3125 2094  Q 3222 2591 3075 2838  Q 2931 3084 2544 3084  Q 2078 3084 1750 2788  Q 1425 2491 1325 1978  L 941 0  L 363 0  L 1044 3500  L 1622 3500  L 1516 2956  Q 1781 3272 2094 3428  Q 2403 3584 2769 3584  Q 3372 3584 3609 3213  Q 3844 2838 3703 2113  z " transform="scale(0.015625)" />
+     <path id="DejaVuSans-2207" d="M 2138 659  L 3444 4047  L 831 4047  L 2138 659  z M 1791 0  L -19 4603  L 4300 4603  L 2491 0  L 1791 0  z " transform="scale(0.015625)" />
+     <path id="STIXNonUnicode-Italic-e238" d="M 4070 915  L 4179 800  Q 3347 -45 2413 -45  Q 2157 -45 1850 26  Q 1395 122 1146 122  Q 1005 122 672 61  Q 339 0 192 0  L 230 154  Q 582 154 730 749  L 1178 2566  Q 1286 3008 1516 3353  Q 1747 3699 2025 3894  Q 2304 4090 2585 4189  Q 2867 4288 3123 4288  Q 3443 4288 3593 4083  Q 3744 3878 3744 3584  Q 3744 3347 3593 3200  Q 3443 3053 3226 3053  Q 3085 3053 2995 3149  Q 2906 3245 2906 3379  Q 2906 3482 2957 3552  Q 3008 3622 3065 3644  Q 3123 3667 3174 3705  Q 3226 3744 3226 3789  Q 3226 4032 2854 4032  Q 2522 4032 2310 3785  Q 2099 3539 1990 3132  Q 1882 2726 1795 2284  Q 1709 1843 1549 1363  Q 1389 883 1158 589  L 1158 563  Q 1363 704 1888 704  Q 2227 704 2460 544  Q 2694 384 2963 384  Q 3507 384 4070 915  z " transform="scale(0.015625)" />
+    </defs>
+    <use xlink:href="#DejaVuSans-Oblique-3b8" transform="translate(0 0.234375)" />
+    <use xlink:href="#DejaVuSans-2190" transform="translate(80.664062 0.234375)" />
+    <use xlink:href="#DejaVuSans-Oblique-3b8" transform="translate(183.935547 0.234375)" />
+    <use xlink:href="#DejaVuSans-2212" transform="translate(264.599609 0.234375)" />
+    <use xlink:href="#DejaVuSans-Oblique-3b7" transform="translate(367.871094 0.234375)" />
+    <use xlink:href="#DejaVuSans-2207" transform="translate(447.485676 0.234375)" />
+    <use xlink:href="#DejaVuSans-Oblique-3b8" transform="translate(515.337239 -16.171875) scale(0.7)" />
+    <use xlink:href="#STIXNonUnicode-Italic-e238" transform="translate(560.898762 0.234375)" />
+   </g>
+  </g>
+ 
+  </g>
+</svg>
