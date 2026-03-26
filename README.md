@@ -128,6 +128,7 @@ cmake --build . -j
 
 - Visual Studio 2022 with `Desktop development with C++`
 - CUDA Toolkit with Visual Studio integration installed
+- For GeForce RTX 50-series GPUs, use CUDA Toolkit `12.8` or newer
 - NVIDIA Nsight Visual Studio Edition installed
 - NVIDIA driver and a real CUDA-capable GPU on the machine where you debug/profile
 
@@ -154,17 +155,17 @@ Open the generated `.sln` from the corresponding `build/vs2022-*` directory in V
 If you prefer direct `cmake` commands instead of presets:
 
 ```powershell
-cmake -S . -B build\vs2022-debug -G "Visual Studio 17 2022" -A x64 -DKAN_ENABLE_CUDA_DEBUG=ON -DKAN_ENABLE_CUDA_LINEINFO=ON -DCMAKE_CUDA_ARCHITECTURES=89
+cmake -S . -B build\vs2022-debug -G "Visual Studio 17 2022" -A x64 -DKAN_ENABLE_CUDA_DEBUG=ON -DKAN_ENABLE_CUDA_LINEINFO=ON -DCMAKE_CUDA_ARCHITECTURES=120
 cmake --build build\vs2022-debug --config Debug
 ```
 
 ```powershell
-cmake -S . -B build\vs2022-relwithdebinfo -G "Visual Studio 17 2022" -A x64 -DKAN_ENABLE_CUDA_DEBUG=OFF -DKAN_ENABLE_CUDA_LINEINFO=ON -DCMAKE_CUDA_ARCHITECTURES=89
+cmake -S . -B build\vs2022-relwithdebinfo -G "Visual Studio 17 2022" -A x64 -DKAN_ENABLE_CUDA_DEBUG=OFF -DKAN_ENABLE_CUDA_LINEINFO=ON -DCMAKE_CUDA_ARCHITECTURES=120
 cmake --build build\vs2022-relwithdebinfo --config RelWithDebInfo
 ```
 
 Notes:
-- Change `CMAKE_CUDA_ARCHITECTURES` to match your GPU SM version for faster builds. Example: `86` for many RTX 30 cards, `89` for many RTX 40 cards.
+- Change `CMAKE_CUDA_ARCHITECTURES` to match your GPU SM version for faster builds. Example: `86` for many RTX 30 cards, `89` for many RTX 40 cards, `120` for RTX 50 cards.
 - If you have multiple CUDA toolkits installed, you can add `-T cuda=<toolkit-version>` to the manual configure command.
 - The Visual Studio target is set up to launch `kan_credit_train` with `train-hmda-data.csv 16 8 3 20 512 0.01` by default.
 
