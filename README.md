@@ -1,5 +1,7 @@
 # CUDA KAN credit model (pure C++/CUDA)
 
+KAN model used to estimate the creditworthiness of loan applicants using historical data in the context of macroeconomic factors.
+
 ## What is implemented
 
 - CSV parsing for `train-hmda-data.csv`
